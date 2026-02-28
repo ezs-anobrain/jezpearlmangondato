@@ -5,9 +5,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\ProductController;
+use App\Services\ProductService;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ['name' => 'funtilon-app']);
 });
 
 Route::get('/show-users', [UserController::class, 'show']);
@@ -68,3 +70,16 @@ Route::get('/token', function(Request $request) {
 Route::post('/token', function(Request $request) {
     return $request->all();
 });
+
+Route::get('/users', [UserController::class, 'index'])->middleware('user-middleware');
+
+Route::resource('products', ProductController::class);
+
+Route::get('/product-list', function (ProductService $productService) {
+    $data['products'] = $productService->listProducts();
+    return view ('products.list', $data);
+});
+
+// Legacy/alternate route used by some UI/tests
+Route::get('/products-lists', [ProductController::class, 'index']);
+
