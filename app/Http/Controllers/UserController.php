@@ -21,8 +21,8 @@ class UserController extends Controller
     ];
     return response()->json($users);
 }
-    public function index(UserService $userService) {
-        return $userService->listUsers();
+    public function index(UserService $userService): mixed {
+        return view('users.index', ['users' => $userService->listUsers()]);
     }
 
     public function first(UserService $userService) {
@@ -36,4 +36,5 @@ class UserController extends Controller
 
         return $user;
     }
+
 }
